@@ -8,10 +8,12 @@ import json
 
 load_dotenv()
 
-google_cloud_credentials = os.getenv('GOOGLE_CLOUD_CREDENTIALS')
+twilio_account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+twilio_auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 google_cloud_credentials = json.loads(os.getenv('GOOGLE_CLOUD_CREDENTIALS'))
 
-
+print(f"Twilio Account SID: {twilio_account_sid}")  # Linha de debug
+print(f"Twilio Auth Token: {twilio_auth_token}")    # Linha de debug
 
 def main():
     cap = cv2.VideoCapture(0)
