@@ -2,6 +2,17 @@ import cv2
 import numpy as np
 import time
 import actions
+from dotenv import load_dotenv
+import os
+import json
+
+load_dotenv()
+
+google_cloud_credentials = os.getenv('GOOGLE_CLOUD_CREDENTIALS')
+google_cloud_credentials = json.loads(os.getenv('GOOGLE_CLOUD_CREDENTIALS'))
+twilio_account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+twilio_auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+
 
 def main():
     cap = cv2.VideoCapture(0)

@@ -1,3 +1,4 @@
+"""
 import cv2
 from google.cloud import storage
 import time
@@ -30,3 +31,4 @@ if person_detected and not photo_taken:
         to='whatsapp:+5511956028279'  # Seu número de WhatsApp com código do país
     )
     photo_taken = True
+"""
