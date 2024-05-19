@@ -12,13 +12,10 @@ twilio_account_sid = os.getenv("TWILIO_ACCOUNT_SID")
 twilio_auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 google_cloud_credentials = json.loads(os.getenv('GOOGLE_CLOUD_CREDENTIALS'))
 
-print(f"Twilio Account SID: {twilio_account_sid}")  # Linha de debug
-print(f"Twilio Auth Token: {twilio_auth_token}")    # Linha de debug
-
 def main():
     cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)  # Ajuste a largura para 1920 pixels
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)  # Ajuste a altura para 1080 pixels
 
     _, frame1 = cap.read()
     gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
@@ -30,7 +27,8 @@ def main():
     while True:
         time.sleep(0.1)  # Limit frame rate
         _, frame2 = cap.read()
-        gray2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
+        frame_for_detection = frame2.copy()  # Copiar frame original para detecção
+        gray2 = cv2.cvtColor(frame_for_detection, cv2.COLOR_BGR2GRAY)
         gray2 = cv2.GaussianBlur(gray2, (21, 21), 0)
 
         delta_frame = cv2.absdiff(gray1, gray2)
@@ -48,8 +46,8 @@ def main():
             cv2.rectangle(frame2, (x, y), (x+w, y+h), (0, 255, 0), 3)
 
         if motion_detected and (time.time() - last_capture_time > capture_interval):
-            actions.handle_detection(frame2)
-            last_capture_time = time.time()  # Update the last capture time
+            actions.handle_detection(frame_for_detection)  # Passar frame original para salvar
+            last_capture_time = time.time()  # Atualizar o tempo da última captura
 
         gray1 = gray2.copy()
         cv2.imshow("Motion Detection", frame2)
